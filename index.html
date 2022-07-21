@@ -189,6 +189,7 @@
                             alert('贏家是'+cell.innerText+'!');
                             Endgame();
                             gameOver = true;
+                            return;
                         }
             
                     }
@@ -196,8 +197,10 @@
                         gameOver = true;
                         Endgame();
                         alert('平手!');
+                        return;
                     }
                 }
+                return;
             }
 
             function Endgame(){
