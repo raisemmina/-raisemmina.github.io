@@ -20,7 +20,8 @@
             .row[_ox]{
                 display: table-row;
             }
-            .cell[_ox],.cellClick[_ox],.notClick[_ox] {
+            .cell[_ox],.cellClick[_ox]{
+                cursor:pointer;
                 display: table-cell;
                 width: 75px;
                 height: 75px;
@@ -118,8 +119,8 @@
                 return win;
             };
             function textTimer(){
-                if(currentStep%2===0) count1.innerText=String((time1/10));
-                else count2.innerText=String((time2/10));
+                if(currentStep%2===0) count1.innerText=String((time1/10).toFixed(1));
+                else count2.innerText=String((time2/10).toFixed(1));
             }
             function count(){
                 if(currentStep%2===0) time1--;
