@@ -4,24 +4,22 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <style>
-            *[_ox]{
+            *{
                 cursor:default;
                 user-select: none;
                 margin-bottom: 1em; 
             }
-            button[_ox]:enabled{
+            button:enabled{
                 cursor: pointer;
             }
-
-            .table[_ox] {
+            .table {
                 display: table;
                 border-collapse: collapse;
             }
-            .row[_ox]{
+            .row{
                 display:table-row;
             }
-            .cell[_ox],.cellClick[_ox]{
-                cursor : pointer;
+            .cell,.cellClick{
                 display: table-cell;
                 width: 75px;
                 height: 75px;
@@ -30,24 +28,22 @@
                 text-align: center;
                 vertical-align: middle;
             }
-
             #current,.player {
     
                 font-size: small;
                 margin-top:1em;
     
             }
-
-            .cell[_ox]:hover,.cell.Click[_ox]{
+            .cell:hover,.cell.Click{
                 color:black;
             }
         </style>
         
     </head>
     <body>
-        <button _ox id="start">開始</button>
-        <button _ox id="reset" disabled>重置</button>
-        <div id="table"></div>
+        <button id="start">開始</button>
+        <button  id="reset" disabled>重置</button>
+        <div class='table 'id="gamepad" ></div>
         <div  id="current">
             目前玩家 : 
             <span id="turn">O</span>
@@ -55,25 +51,12 @@
         <div class="player" >O : <span id="time1">60.0</span></div>
         <div class="player" >X : <span id="time2">60.0</span></div>
         <script >
-            
-            //generate 3*3 table
-            let table="<div _ox class='table' id=gamepad>";
-            let n=0;
-            for(let j=0;j<3;j++){
-                table+="<div _ox class='row'>";
-                for(let i=0;i<3;i++,n++)table+="<div _ox class='cell' data-i='"+n+"'></div>";
-                table+="</div>";
-            }
-            table+="</table>";
-            document.getElementById('table').innerHTML=table;
-
             const gamepad=document.getElementById('gamepad');//table
             const start=document.getElementById('start'); //btn start
             const reset=document.getElementById('reset'); //btn reset
             const player=document.getElementById('turn'); //cerrent player
             const count1=document.getElementById('time1'); // countdown for O
             const count2=document.getElementById('time2'); // countdown for 1
-            let cells=Array.from(document.querySelectorAll('.cell'));
             let occupied=Array.from(Array(9).keys()); //record if cells are clicked
             let currentStep = 0, //steps
                 currentState = Array.from(Array(9).keys()); //record clicked cells are 0 or X
@@ -84,7 +67,22 @@
             let timer1 ,timer2;
             let winner=-1; // 0 is O,1 is X, -1 represent nobody win.
             let timeOri;
-
+            
+            //generate 3*3 table
+            let cells=[];
+            let n=0;
+            for(var i=0;i<3;i++){
+                let row=document.createElement('div');
+                row.className='row';
+                for(var j=0;j<3;j++,n++){
+                    let tmp=document.createElement('div');
+                    tmp.className='cell';
+                    tmp.setAttribute('data-i',n);
+                    row.appendChild(tmp);
+                    cells.push(tmp);
+                }
+                gamepad.appendChild(row);
+            }
 
             let winninglines = {//winning condition
                 line0:[0, 1, 2],
@@ -162,6 +160,7 @@
                 });
                 cells.forEach((cell)=>{
                     cell.innerText='O';
+                    cell.style.cursor="pointer";
                 });
                 // start game
                 timeOri=new Date().getTime();
@@ -179,6 +178,7 @@
                 if(!occupied[index] && !gameOver){
                     if(cell.innerText!=' '){
                     cell.className+=' Click';
+                    cell.style.cursor="default";
                         occupied[index]= true;
                         if(currentStep%2 === 0){// current player is O
                             player.innerText='X';
@@ -229,6 +229,7 @@
                 window.cancelAnimationFrame(timer2);
                 winner =-1;
                 cells.forEach((cell,index)=>{
+                    cell.style.cursor="default";
                     if(!occupied[index]) cells[index].innerText=' ';
                 });
             }
