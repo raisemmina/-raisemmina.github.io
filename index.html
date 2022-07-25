@@ -56,10 +56,10 @@
             const reset=document.getElementById('reset'); //btn reset
             const player=document.getElementById('turn'); //cerrent player
             const count1=document.getElementById('time1'); // countdown for O
-            const count2=document.getElementById('time2'); // countdown for 1
+            const count2=document.getElementById('time2'); // countdown for X
             let occupied=Array.from(Array(9).keys()); //record if cells are clicked
             let currentStep = 0, //steps
-                currentState = Array.from(Array(9).keys()); //record clicked cells are 0 or X
+                currentState = Array.from(Array(9).keys()); //record clicked cells are O or X
             let gameOver = true; 
             let time1=600,
                 time2=600,
